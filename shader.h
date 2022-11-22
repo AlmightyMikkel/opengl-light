@@ -1,5 +1,7 @@
-#include "glfw3.h"
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <GL/glew.h>
 
 #include <string>
 #include <fstream>

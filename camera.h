@@ -3,7 +3,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "glfw3.h"
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
 #include <vector>
 
@@ -80,7 +81,7 @@ public:
             position -= world_up * velocity;
     }
 
-    void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrain = true)
+    void ProcessMouseMovement(float xoffset, float yoffset, bool constrain = true)
     {
         xoffset *= sensitivity;
         yoffset *= sensitivity;
