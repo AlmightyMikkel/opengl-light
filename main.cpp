@@ -1,10 +1,11 @@
 #define GL_SILENCE_DEPRECATION
-#include "../headers/camera.h"
-#include "../headers/stb_image.h"
-#include "../headers/shader.h"
+#include "camera.h"
+#include "stb_image.h"
+#include "shader.h"
 
-#include "glfw3.h"
-#include <OpenGL/gl3.h> //THIS IS NEEDED FOR MACOS
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+#include <GL/glew.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -51,6 +52,10 @@ int main() {
 
     glfwMakeContextCurrent(window);
 
+    if(glewInit() != GLEW_OK){
+        std::cout << "Failed to init glew" << std::endl;
+    }
+
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
@@ -58,8 +63,8 @@ int main() {
 
     stbi_set_flip_vertically_on_load(true);
 
-    Shader light("/Users/mikkel/CLionProjects/Lights/Source/shaders/colors.vs", "/Users/mikkel/CLionProjects/Lights/Source/shaders/colors.fs");
-    Shader cube_light("/Users/mikkel/CLionProjects/Lights/Source/shaders/light_cubes.vs", "/Users/mikkel/CLionProjects/Lights/Source/shaders/light_cube.fs");
+    Shader light("colors.vs", "colors.fs");
+    Shader cube_light("light_cubes.vs", "light_cube.fs");
 
     glEnable(GL_DEPTH_TEST);
 
@@ -176,13 +181,12 @@ int main() {
         light.setMat4("u_projection", projection);
         light.setMat4("u_view", view);
 
-
+        model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians(2.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         light.setMat4("u_model", model);
 
         glBindVertexArray(cubeVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
-
 
         cube_light.use();
         cube_light.setMat4("u_projection", projection);

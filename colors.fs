@@ -14,13 +14,14 @@ void main() {
 
     float ambient_strength = 0.1;
     vec3 ambient = ambient_strength * light_color;
+    vec3 unitNormal = normalize(f_normal);
 
     vec3 normal = normalize(f_normal);
     vec3 light_direction = normalize(light_position - f_position);
-    float difference = max(dot(normal, light_direction), 0.0);
+    float difference = max(dot(unitNormal, light_direction), 0.0);
     vec3 diffuse = difference * light_color;
 
     vec3 result = (ambient + diffuse) * object_color;
-    f_color = vec4(f_normal, 1.0);
+    f_color = vec4(result, 1.0);
 
 }
